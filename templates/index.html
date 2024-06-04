@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duygu Tahmin Etme Oyunu</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e0f7fa;
+            position: relative;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            margin-top: 50px;
+            position: relative;
+        }
+
+        h1 {
+            text-align: center;
+            color: #00796b;
+            margin-top: 80px;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        #video {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        #emotionCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+
+        #result {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            font-size: 1em;
+            color: #00796b;
+            z-index: 2;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 200px;
+            text-align: center;
+        }
+
+        #audio-input-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #audio-input {
+            display: none;
+        }
+
+        #audio-label {
+            padding: 10px 20px;
+            background-color: #00796b;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+        #audio-label:hover {
+            background-color: #004d40;
+        }
+
+        #audio-label i {
+            margin-right: 10px;
+        }
+
+        #remove-audio {
+            padding: 10px 20px;
+            background-color: #d32f2f;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+            display: none;
+        }
+
+        #remove-audio:hover {
+            background-color: #b71c1c;
+        }
+
+        #remove-audio i {
+            padding-right: 20px;
+        }
+
+        #audio-result {
+            text-align: center;
+            font-size: 1.2em;
+            color: #00796b;
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .p-4 {
+            padding-right: 10px;
+        }
+    </style>
+     <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/solid.js" integrity="sha384-/BxOvRagtVDn9dJ+JGCtcofNXgQO/CCCVKdMfL115s3gOgQxWaX/tSq5V8dRgsbc" crossorigin="anonymous"></script>
+     <script defer src="https://use.fontawesome.com/releases/v5.15.4/js/fontawesome.js" integrity="sha384-dPBGbj4Uoy1OOpM4+aRGfAOc0W37JkROT+3uynUgTHZCHZNMHfGXsmmvYTffZjYO" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Duygu Görüntü ve Ses Tespiti</h1>
+        <img id="video" src="{{ url_for('video_feed') }}" width="640" height="480">
+        <canvas id="emotionCanvas" width="640" height="480"></canvas>
+        <p id="result">Duygu Tespiti</p>
+        <div id="audio-input-container">
+            <label for="audio-input" id="audio-label"><i class="fas fa-file-audio p-4"></i> Ses Dosyası Seç</label>
+            <input type="file" id="audio-input" accept="audio/*">
+            <button id="remove-audio"><i class="fas fa-times p-4"></i>Dosyayı Kaldır</button>
+        </div>
+        <p id="audio-result">Ses Duygu Tespiti</p>
+    </div>
+    <footer>
+        <p>&copy; 2024 Ömer Sefa Güçkıran</p>
+    </footer>
+
+    <script>
+        function updateEmotion() {
+            fetch('/emotion')
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.label && data.score) {
+                        document.getElementById('result').innerText = `Duygu: ${data.label}, Skor: ${data.score.toFixed(2)}`;
+                    } else {
+                        document.getElementById('result').innerText = '';
+                    }
+                });
+        }
+
+        setInterval(updateEmotion, 1000);
+
+        function drawEmotionBox() {
+            fetch('/emotion')
+                .then(response => response.json())
+                .then(data => {
+                    const video = document.getElementById('video');
+                    const canvas = document.getElementById('emotionCanvas');
+                    const ctx = canvas.getContext('2d');
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    if (data && data.label && (data.label === 'Mutlu' || data.label === 'Şaşırmış')) {
+                        const scaleFactorX = video.offsetWidth / video.videoWidth;
+                        const scaleFactorY = video.offsetHeight / video.videoHeight;
+
+                        const faceBox = data.faceBox;
+
+                        const x = faceBox.x * scaleFactorX;
+                        const y = faceBox.y * scaleFactorY;
+                        const width = faceBox.width * scaleFactorX;
+                        const height = faceBox.height * scaleFactorY;
+
+                        ctx.beginPath();
+                        ctx.lineWidth = '3';
+                        ctx.strokeStyle = 'green';
+                        ctx.rect(x, y, width, height);
+                        ctx.stroke();
+                    }
+                });
+        }
+
+        setInterval(drawEmotionBox, 1000);
+
+        const audioInput = document.getElementById('audio-input');
+        const audioResult = document.getElementById('audio-result');
+        const removeAudioButton = document.getElementById('remove-audio');
+
+        audioInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                const formData = new FormData();
+                formData.append('audio_file', file);
+
+                fetch('/audio_emotion', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data && data.emotion && data.score) {
+                        audioResult.innerText = `Duygu: ${data.emotion}, Skor: ${data.score.toFixed(2)}`;
+                        removeAudioButton.style.display = 'inline-flex';
+                    } else {
+                        audioResult.innerText = 'Duygu tespiti başarısız oldu.';
+                    }
+                })
+                .catch(error => {
+                    audioResult.innerText = 'Duygu tespiti sırasında hata oluştu.';
+                });
+            }
+        });
+
+        removeAudioButton.addEventListener('click', function() {
+            audioInput.value = '';
+            audioResult.innerText = 'Ses Duygu Tespiti';
+            removeAudioButton.style.display = 'none';
+        });
+    </script>
+</body>
+</html>
