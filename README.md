@@ -1,5 +1,3 @@
-Tabii ki, daha dikkatli yazılmış ve doğru linklerle güncellenmiş `README.md` dosyasını aşağıda bulabilirsiniz:
-
 ```markdown
 # Duygu Tahmin Etme Projesi
 
