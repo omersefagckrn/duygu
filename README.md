@@ -93,14 +93,3 @@ Uygulama başlatıldığında, tarayıcınızda `http://127.0.0.1:5000/` adresin
 
 - Yüklenen ses dosyaları üzerinden duyguların tahmin edilmesi
 - Web arayüzünde tahmin edilen duygu ve skorun görüntülenmesi
-
-## Katkıda Bulunma
-
-Bu projeye katkıda bulunmak isterseniz, lütfen bir pull request gönderin veya bir issue açın.
-
-## Lisans
-
-Bu proje MIT lisansı ile lisanslanmıştır. Daha fazla bilgi için `LICENSE` dosyasına bakın.
-```
-
-Bu metni doğrudan GitHub'daki projenizin `README.md` dosyasına yapıştırabilirsiniz.
