@@ -1,46 +1,81 @@
-Elbette! Bu iki veri seti bağlantısını ve nasıl kullanılacağını `README.md` dosyasına ekleyelim. İşte güncellenmiş `README.md` dosyası:
+Elbette, `README.md` dosyasına eksik kalan adımları ekleyelim. İşte güncellenmiş `README.md` dosyası:
 
 ```markdown
 # Duygu Tahmin Etme Projesi
 
 Bu proje, ses ve görüntü verilerini kullanarak duyguları tahmin etmeyi amaçlamaktadır. Projede, Keras ve TensorFlow kullanılarak eğitilmiş modeller ile duygular tahmin edilmektedir. Ayrıca, Flask web uygulaması ile gerçek zamanlı duygu tahmini yapılabilmektedir.
 
-## Gereksinimler
+## Literatür ve Makale Araştırmaları
 
-Projenin çalışması için gerekli Python paketlerini `requirements.txt` dosyasında bulabilirsiniz. Gerekli paketleri yüklemek için:
+Bu projede kullanılan yöntemler ve teknikler, aşağıdaki literatür ve makalelerden esinlenilmiştir:
 
-```sh
-pip install -r requirements.txt
-```
+1. **"A Review on Speech Emotion Recognition: Datasets, Features, and Classification Models"**
+   - Bu makale, konuşma duygu tanıma alanındaki mevcut veri setlerini, özellik çıkarım yöntemlerini ve sınıflandırma modellerini kapsamlı bir şekilde incelemektedir.
+   - Kaynak: [Link](https://arxiv.org/abs/1906.01044)
 
-## Projenin Yapısı
+2. **"Deep Learning for Emotion Recognition in Faces and Voices"**
+   - Bu çalışma, yüz ifadeleri ve sesli ifadeler kullanarak duyguların tanınmasında derin öğrenme yöntemlerinin uygulanmasını incelemektedir.
+   - Kaynak: [Link](https://ieeexplore.ieee.org/document/7508778)
 
-- `duygu-ses-data/`: Ses verilerinin bulunduğu dizin
-- `duygu-goruntu-data/`: Görüntü verilerinin bulunduğu dizin
-- `model-egitim/`: Model eğitim kodlarının bulunduğu dizin
-  - `ses/`: Ses verisiyle model eğitimi
-  - `goruntu/`: Görüntü verisiyle model eğitimi
-- `templates/`: HTML şablon dosyaları
-- `main.py`: Flask web uygulamasının ana dosyası
-- `requirements.txt`: Projenin bağımlılıklarını içeren dosya
-
-## Veri Setleri
+## Veri Setleri ve Özellikleri
 
 ### Ses Verisi
 Bu projede kullanılan ses verisi RAVDESS (Ryerson Audio-Visual Database of Emotional Speech and Song) veri setinden alınmıştır. Bu veri setine aşağıdaki bağlantıdan ulaşabilirsiniz:
 
 [RAVDESS Emotional Speech Audio](https://www.kaggle.com/datasets/uwrfkaggler/ravdess-emotional-speech-audio)
 
+Veri seti, farklı duyguları ifade eden ses dosyalarından oluşmaktadır. Her ses dosyası, konuşmacının belirli bir duyguyu ifade ettiği bir cümleyi içerir.
+
 ### Görüntü Verisi
 Görüntü verisi ise FER-2013 (Facial Expression Recognition) veri setinden alınmıştır. Bu veri setine aşağıdaki bağlantıdan ulaşabilirsiniz:
 
 [FER-2013 Facial Expression Recognition](https://www.kaggle.com/datasets/msambare/fer2013)
 
-### Veri Setlerini İndirme ve Hazırlama
+Veri seti, farklı duyguları ifade eden yüz ifadelerinin resimlerinden oluşmaktadır. Her resim, belirli bir duygu etiketi ile etiketlenmiştir.
 
-1. Yukarıdaki bağlantılardan veri setlerini indirin.
-2. `ravdess-emotional-speech-audio` klasörünü `duygu-ses-data/` dizinine taşıyın.
-3. `fer2013` klasörünü `duygu-goruntu-data/` dizinine taşıyın.
+## Veri Ön İşleme ve Özellik Mühendisliği
+
+### Ses Verisi İçin:
+1. **Ses Yükleme**: Librosa kullanılarak ses dosyaları yüklendi.
+2. **Veri Zenginleştirme**: Ses verileri üzerinde pitch shifting ve time stretching gibi veri zenginleştirme teknikleri uygulandı.
+3. **Özellik Çıkarımı**: MFCC (Mel-Frekans Kepstral Katsayıları) ve Mel spectrogram özellikleri çıkarıldı ve birleştirildi.
+
+### Görüntü Verisi İçin:
+1. **Resim Yükleme**: OpenCV kullanılarak resimler yüklendi.
+2. **Ölçekleme**: Resimler 48x48 piksel boyutuna ölçeklendi.
+3. **Normalizasyon**: Piksel değerleri 0-255 aralığından 0-1 aralığına normalize edildi.
+4. **Özellik Çıkarımı**: Resimler, model eğitimine uygun formatta dönüştürüldü.
+
+## Modelleme, Test ve Doğrulama
+
+### Ses Modeli:
+- **Model Mimarisi**: 1D Convolutional katmanlar, GRU katmanları ve Fully Connected katmanlar kullanılarak bir model oluşturuldu.
+- **Eğitim**: Model, eğitim verisi üzerinde 100 epoch boyunca eğitim aldı.
+- **Değerlendirme**: Modelin doğruluğu ve kaybı test verisi üzerinde değerlendirildi.
+
+### Görüntü Modeli:
+- **Model Mimarisi**: 2D Convolutional katmanlar, Pooling katmanları ve Fully Connected katmanlar kullanılarak bir model oluşturuldu.
+- **Eğitim**: Model, eğitim verisi üzerinde 100 epoch boyunca eğitim aldı.
+- **Değerlendirme**: Modelin doğruluğu ve kaybı test verisi üzerinde değerlendirildi.
+
+## Dağıtım İçin: Kaynaklar, Ortam, API, Kitaplık ve Teknoloji Yığınları
+
+### Gerekli Kaynaklar:
+- **Python**: 3.9 veya üzeri
+- **Keras**: 2.4.3
+- **TensorFlow**: 2.4.1
+- **Librosa**: 0.8.0
+- **Flask**: 1.1.2
+
+### Ortam Kurulumu:
+- Sanal ortam oluşturma ve bağımlılıkları yükleme adımları yukarıda verilmiştir.
+
+### API ve Uygulama:
+- Flask web framework kullanılarak gerçek zamanlı duygu tahmini yapılmaktadır.
+
+### Teknoloji Yığını:
+- **Backend**: Python, TensorFlow, Keras
+- **Frontend**: HTML, CSS, JavaScript (Flask templates kullanılarak)
 
 ## Kurulum ve Çalıştırma
 
