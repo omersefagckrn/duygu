@@ -1,21 +1,28 @@
-Elbette, `README.md` dosyasına eksik kalan adımları ekleyelim. İşte güncellenmiş `README.md` dosyası:
+Tabii ki, daha dikkatli yazılmış ve doğru linklerle güncellenmiş `README.md` dosyasını aşağıda bulabilirsiniz:
 
 ```markdown
 # Duygu Tahmin Etme Projesi
 
 Bu proje, ses ve görüntü verilerini kullanarak duyguları tahmin etmeyi amaçlamaktadır. Projede, Keras ve TensorFlow kullanılarak eğitilmiş modeller ile duygular tahmin edilmektedir. Ayrıca, Flask web uygulaması ile gerçek zamanlı duygu tahmini yapılabilmektedir.
 
-## Literatür ve Makale Araştırmaları
+## Gereksinimler
 
-Bu projede kullanılan yöntemler ve teknikler, aşağıdaki literatür ve makalelerden esinlenilmiştir:
+Projenin çalışması için gerekli Python paketlerini `requirements.txt` dosyasında bulabilirsiniz. Gerekli paketleri yüklemek için:
 
-1. **"A Review on Speech Emotion Recognition: Datasets, Features, and Classification Models"**
-   - Bu makale, konuşma duygu tanıma alanındaki mevcut veri setlerini, özellik çıkarım yöntemlerini ve sınıflandırma modellerini kapsamlı bir şekilde incelemektedir.
-   - Kaynak: [Link](https://arxiv.org/abs/1906.01044)
+```sh
+pip install -r requirements.txt
+```
 
-2. **"Deep Learning for Emotion Recognition in Faces and Voices"**
-   - Bu çalışma, yüz ifadeleri ve sesli ifadeler kullanarak duyguların tanınmasında derin öğrenme yöntemlerinin uygulanmasını incelemektedir.
-   - Kaynak: [Link](https://ieeexplore.ieee.org/document/7508778)
+## Projenin Yapısı
+
+- `duygu-ses-data/`: Ses verilerinin bulunduğu dizin
+- `duygu-goruntu-data/`: Görüntü verilerinin bulunduğu dizin
+- `model-egitim/`: Model eğitim kodlarının bulunduğu dizin
+  - `ses/`: Ses verisiyle model eğitimi
+  - `goruntu/`: Görüntü verisiyle model eğitimi
+- `templates/`: HTML şablon dosyaları
+- `main.py`: Flask web uygulamasının ana dosyası
+- `requirements.txt`: Projenin bağımlılıklarını içeren dosya
 
 ## Veri Setleri ve Özellikleri
 
@@ -32,6 +39,12 @@ Görüntü verisi ise FER-2013 (Facial Expression Recognition) veri setinden al�
 [FER-2013 Facial Expression Recognition](https://www.kaggle.com/datasets/msambare/fer2013)
 
 Veri seti, farklı duyguları ifade eden yüz ifadelerinin resimlerinden oluşmaktadır. Her resim, belirli bir duygu etiketi ile etiketlenmiştir.
+
+### Veri Setlerini İndirme ve Hazırlama
+
+1. Yukarıdaki bağlantılardan veri setlerini indirin.
+2. `ravdess-emotional-speech-audio` klasörünü `duygu-ses-data/` dizinine taşıyın.
+3. `fer2013` klasörünü `duygu-goruntu-data/` dizinine taşıyın.
 
 ## Veri Ön İşleme ve Özellik Mühendisliği
 
@@ -50,12 +63,12 @@ Veri seti, farklı duyguları ifade eden yüz ifadelerinin resimlerinden oluşma
 
 ### Ses Modeli:
 - **Model Mimarisi**: 1D Convolutional katmanlar, GRU katmanları ve Fully Connected katmanlar kullanılarak bir model oluşturuldu.
-- **Eğitim**: Model, eğitim verisi üzerinde 100 epoch boyunca eğitim aldı.
+- **Eğitim**: Model, ses verisi üzerinde 100 epoch boyunca eğitim aldı.
 - **Değerlendirme**: Modelin doğruluğu ve kaybı test verisi üzerinde değerlendirildi.
 
 ### Görüntü Modeli:
 - **Model Mimarisi**: 2D Convolutional katmanlar, Pooling katmanları ve Fully Connected katmanlar kullanılarak bir model oluşturuldu.
-- **Eğitim**: Model, eğitim verisi üzerinde 100 epoch boyunca eğitim aldı.
+- **Eğitim**: Model, görüntü verisi üzerinde 30 epoch boyunca eğitim aldı.
 - **Değerlendirme**: Modelin doğruluğu ve kaybı test verisi üzerinde değerlendirildi.
 
 ## Dağıtım İçin: Kaynaklar, Ortam, API, Kitaplık ve Teknoloji Yığınları
