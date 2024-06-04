@@ -1,4 +1,4 @@
-Elbette, işte proje adımlarını detaylandıran bir `README.md` dosyası:
+Elbette! Bu iki veri seti bağlantısını ve nasıl kullanılacağını `README.md` dosyasına ekleyelim. İşte güncellenmiş `README.md` dosyası:
 
 ```markdown
 # Duygu Tahmin Etme Projesi
@@ -23,6 +23,24 @@ pip install -r requirements.txt
 - `templates/`: HTML şablon dosyaları
 - `main.py`: Flask web uygulamasının ana dosyası
 - `requirements.txt`: Projenin bağımlılıklarını içeren dosya
+
+## Veri Setleri
+
+### Ses Verisi
+Bu projede kullanılan ses verisi RAVDESS (Ryerson Audio-Visual Database of Emotional Speech and Song) veri setinden alınmıştır. Bu veri setine aşağıdaki bağlantıdan ulaşabilirsiniz:
+
+[RAVDESS Emotional Speech Audio](https://www.kaggle.com/datasets/uwrfkaggler/ravdess-emotional-speech-audio)
+
+### Görüntü Verisi
+Görüntü verisi ise FER-2013 (Facial Expression Recognition) veri setinden alınmıştır. Bu veri setine aşağıdaki bağlantıdan ulaşabilirsiniz:
+
+[FER-2013 Facial Expression Recognition](https://www.kaggle.com/datasets/msambare/fer2013)
+
+### Veri Setlerini İndirme ve Hazırlama
+
+1. Yukarıdaki bağlantılardan veri setlerini indirin.
+2. `ravdess-emotional-speech-audio` klasörünü `duygu-ses-data/` dizinine taşıyın.
+3. `fer2013` klasörünü `duygu-goruntu-data/` dizinine taşıyın.
 
 ## Kurulum ve Çalıştırma
 
